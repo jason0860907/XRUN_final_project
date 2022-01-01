@@ -9,6 +9,7 @@ import cv2 as cv
 # import matplotlib.image as mpimg 
 # import matplotlib.pyplot as plt
 # import seaborn as sns
+
 import numpy.random as random
 import cv2
 import numpy as np
@@ -33,6 +34,7 @@ def get_t_fun(four_point, height, width, win_h, win_w):
     dst = np.asarray([[diff_w, diff_h], [diff_w, diff_h + height], [diff_w + width, diff_h + height], [diff_w + width, diff_h]])
     if not t.estimate(src, dst): raise Exception("estimate failed")
     return t
+
 def get_hit_point_range(point_range, hit_point, height, width, win_h, win_w, t_fcn):
     hit_point = np.array(hit_point)[:2]
     hit_point = t_fcn(hit_point)

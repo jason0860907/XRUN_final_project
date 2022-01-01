@@ -4,6 +4,7 @@ import random
 import time
 
 from trace_record import *
+# from fun_2d_ne import *
 
 def draw_tail(detected_tail, image, _color=(255, 255, 0)):  # rgb
     import cv2

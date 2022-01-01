@@ -1,7 +1,9 @@
 import numpy as np
 import copy
 
+# from fun_2d_ne import get_t_fun, get_hit_point_range
 from fun_2d_ne import *
+
 
 table_h = 456
 table_w = 822
