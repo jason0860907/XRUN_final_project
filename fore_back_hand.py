@@ -1,6 +1,29 @@
-import pyopenpose as op
+import os
+import sys
+import time
+import numpy as np
+import cv2
+import pandas as pd
 
-def pose_estimate(op, opwrapper, pose_queue, kp_queue, skeleton_mask):
+# Import Openpose (Windows/Ubuntu/OSX)
+dir_path = os.path.dirname(os.path.realpath(__file__))
+# Change these variables to point to the correct folder (Release/x64 etc.)
+sys.path.append(dir_path + '/testing/python/openpose/Release')
+os.environ['PATH']  = os.environ['PATH'] + ';' + dir_path + '/testing/x64/Release;' +  dir_path + '/testing/bin;'
+
+import pyopenpose as op
+from utils import calculate_angle
+
+
+def apply_mask(img, mask):
+    # print(img.shape, mask.shape, img.dtype, mask.dtype)
+    return cv2.bitwise_and(img, img, mask=mask)
+
+def moving_average(x, w):
+    result = np.convolve(x, np.ones(w), 'valid') / w
+    return result
+
+def pose_estimate(cap, op, opwrapper, pose_queue, kp_queue, skeleton_mask):
     first_print = False
     while cap.isOpened():
         if pose_queue.empty():
@@ -29,7 +52,7 @@ def pose_estimate(op, opwrapper, pose_queue, kp_queue, skeleton_mask):
                 kp_queue.get()
             
     
-def wait_for_hit_point(kp_queue, hitpoint_queue, hand_queue, left_handed):
+def wait_for_hit_point(cap, kp_queue, hitpoint_queue, hand_queue, left_handed):
     while cap.isOpened():
         if hitpoint_queue.empty():
             continue
@@ -97,7 +120,8 @@ def judge_fore_back(kp_queue, hit_point, left_handed=(False, False)):
         s = pd.Series(angles)
         s = s.interpolate()
         angles = s.tolist()
-    
+
+
     angles = moving_average(angles, 10)
     is_forhand = fore_or_back(angles)
     

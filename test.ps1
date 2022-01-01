@@ -1,7 +1,7 @@
 # set -e
 
 
-$darknet_path = 'C:\Users\OWNER\Desktop\xrun\darknet'
+$darknet_path = 'C:\Users\OWNER\Desktop\xrun_yeeepon\darknet'
 $exp_pwd = $((pwd).Path)
 echo ${exp_pwd}
 

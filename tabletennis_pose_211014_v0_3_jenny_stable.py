@@ -17,24 +17,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 import copy
 from darknet import darknet
 from fun_2d_ne import *
-from utils import calculate_angle
+
 
 from fore_back_hand import *
-
-# Import Openpose (Windows/Ubuntu/OSX)
-dir_path = os.path.dirname(os.path.realpath(__file__))
-# Change these variables to point to the correct folder (Release/x64 etc.)
-sys.path.append(dir_path + '/testing/python/openpose/Release')
-os.environ['PATH']  = os.environ['PATH'] + ';' + dir_path + '/testing/x64/Release;' +  dir_path + '/testing/bin;'
-
-
-def apply_mask(img, mask):
-    # print(img.shape, mask.shape, img.dtype, mask.dtype)
-    return cv2.bitwise_and(img, img, mask=mask)
-
-def moving_average(x, w):
-    result = np.convolve(x, np.ones(w), 'valid') / w
-    return result
 
 
 def parser():
@@ -820,6 +805,7 @@ def showing(out_filename, image_queue, hand_queue, mask, tail_queue,
 
                 cv2.putText(show_img, 'Detect: {}'.format(hand), (800, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 1, cv2.LINE_AA)
                 cv2.imshow('full', show_img)
+
                 if out_filename is not None:
                     video.write(show_img)
                 # if display_type == 5:
@@ -1144,7 +1130,7 @@ if __name__ == '__main__':
            report_hand_hit_queue, report_bounce_queue)).start()
     Thread(target=showing, args=(args.out_filename, image_queue, hand_queue, mask, tail_queue, t_fun,
            args.draw_original, name1, name2, watermark_img, frame_queue_toShowing, report_hand_hit_queue, hitPoint_queue)).start()
-    Thread(target=pose_estimate, args=(op, opWrapper, pose_queue, kp_queue, skeleton_mask)).start()
-    Thread(target=wait_for_hit_point, args=(kp_queue, hitPoint_queue, hand_queue, left_handed)).start()
+    Thread(target=pose_estimate, args=(cap, op, opWrapper, pose_queue, kp_queue, skeleton_mask)).start()
+    Thread(target=wait_for_hit_point, args=(cap, kp_queue, hitPoint_queue, hand_queue, left_handed)).start()
     Thread(target=report, args=(report_hand_hit_queue,report_bounce_queue)).start()
     Thread(target=upload_report).start()
