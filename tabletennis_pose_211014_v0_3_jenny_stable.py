@@ -834,7 +834,7 @@ if __name__ == '__main__':
     # name1 = ''
     name1 = 'NTCU'
     # name2 = ''  # nknu
-    name1 = 'NKNU'
+    name2 = 'NKNU'
     
     ref_pts = np.load(args.ref_pts)
     t_fun = get_t_fun(ref_pts, table_h, table_w, win_h, win_w)

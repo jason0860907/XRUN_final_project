@@ -5,8 +5,17 @@ import numpy as np
 
 from fun_2d_ne import *
 
+table_h = 456
+table_w = 822
+win_h = 672  # 556
+win_w = 1134  # 1022
+ndim = 2
+
 name1 = 'NTCU'
 name2 = 'NKNU'
+
+ref_pts = np.load(r'C:\Users\OWNER\Documents\Jenny\20210323\points_arr.npy')
+t_fun = get_t_fun(ref_pts, table_h, table_w, win_h, win_w)
 
 def report(cap, report_hand_hit_queue, report_bounce_queue):
     report_array = []
